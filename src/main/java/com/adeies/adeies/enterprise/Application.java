@@ -9,5 +9,5 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
-	public static String conclavio() { return "Millionaire's Club."; }
+	public static String getConclavioMills() { return "Millionaire's Club."; }
 }

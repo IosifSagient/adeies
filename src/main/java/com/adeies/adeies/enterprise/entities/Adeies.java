@@ -1,4 +1,4 @@
-package com.adeies.adeies.enterprise.model;
+package com.adeies.adeies.enterprise.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

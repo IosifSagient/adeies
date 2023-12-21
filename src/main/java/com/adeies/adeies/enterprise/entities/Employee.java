@@ -1,4 +1,4 @@
-package com.adeies.adeies.enterprise.model;
+package com.adeies.adeies.enterprise.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -13,7 +13,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "EMPLOYEE_ID")
-    private Long employee_id;
+    private Long employeeId;
 
     @Column (name = "FIRST_NAME")
     private String firstname;

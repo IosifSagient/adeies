@@ -1,7 +1,10 @@
 package com.adeies.adeies.enterprise.exception;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class ValidationFaultException extends RuntimeException implements Serializable {
 
     private final String errorCode;

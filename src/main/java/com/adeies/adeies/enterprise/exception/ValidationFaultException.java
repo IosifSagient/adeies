@@ -1,9 +1,11 @@
 package com.adeies.adeies.enterprise.exception;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ValidationFaultException extends RuntimeException implements Serializable {
 

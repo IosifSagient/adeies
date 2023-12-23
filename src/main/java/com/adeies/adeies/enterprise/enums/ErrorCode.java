@@ -4,8 +4,8 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR("500"),
     NOT_FOUND("400"),
     SUCCESS("0000"),
-    WRONG_EMPLOYEE_DATA("9991");
-
+    WRONG_EMPLOYEE_DATA("9991"),
+    ERROR_UPDATING_EMPLOYEE ("9992") ;
     private final String errorCode;
 
 

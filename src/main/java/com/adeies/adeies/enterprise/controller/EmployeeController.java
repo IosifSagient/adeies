@@ -1,7 +1,9 @@
 package com.adeies.adeies.enterprise.controller;
 
 
+import com.adeies.adeies.enterprise.dto.UpdateEmployeeDto;
 import com.adeies.adeies.enterprise.entities.Employee;
+import com.adeies.adeies.enterprise.entities.WsStatus;
 import com.adeies.adeies.enterprise.model.employee.EmployeeRs;
 import com.adeies.adeies.enterprise.repository.EmployeeRepo;
 import com.adeies.adeies.enterprise.service.EmployeeService;
@@ -27,6 +29,11 @@ public class EmployeeController {
          EmployeeRs newEmployeeRs = employeeService.createEmployee(employee);
          return new ResponseEntity<>(newEmployeeRs, HttpStatus.OK);
 
+ }
+ @PostMapping("/updateEmployee")
+    public ResponseEntity<WsStatus> updateEmployee(@RequestBody UpdateEmployeeDto dto){
+     WsStatus resp = employeeService.updateEmployee(dto);
+        return  new ResponseEntity<>(resp,HttpStatus.OK);
  }
 
 

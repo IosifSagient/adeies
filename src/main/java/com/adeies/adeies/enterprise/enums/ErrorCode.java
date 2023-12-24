@@ -5,6 +5,7 @@ public enum ErrorCode {
     NOT_FOUND("400"),
     SUCCESS("0000"),
     WRONG_EMPLOYEE_DATA("9991"),
+    USER_NOT_FOUND("9923"),
     ERROR_UPDATING_EMPLOYEE ("9992") ;
     private final String errorCode;
 

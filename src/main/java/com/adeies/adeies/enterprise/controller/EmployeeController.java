@@ -1,7 +1,7 @@
 package com.adeies.adeies.enterprise.controller;
 
 
-import com.adeies.adeies.enterprise.dto.UpdateEmployeeDto;
+import com.adeies.adeies.enterprise.dto.EmployeeDto;
 import com.adeies.adeies.enterprise.entities.Employee;
 import com.adeies.adeies.enterprise.entities.WsStatus;
 import com.adeies.adeies.enterprise.model.employee.EmployeeRs;
@@ -31,9 +31,15 @@ public class EmployeeController {
 
  }
  @PostMapping("/updateEmployee")
-    public ResponseEntity<WsStatus> updateEmployee(@RequestBody UpdateEmployeeDto dto){
+    public ResponseEntity<WsStatus> updateEmployee(@RequestBody EmployeeDto dto){
      WsStatus resp = employeeService.updateEmployee(dto);
         return  new ResponseEntity<>(resp,HttpStatus.OK);
+ }
+
+ @PostMapping("/deleteEmployee")
+    public ResponseEntity<WsStatus> deleteEmployee(@RequestBody  EmployeeDto dto){
+     WsStatus resp = employeeService.deleteEmployee(dto);
+     return new ResponseEntity<>(resp,HttpStatus.OK);
  }
 
 

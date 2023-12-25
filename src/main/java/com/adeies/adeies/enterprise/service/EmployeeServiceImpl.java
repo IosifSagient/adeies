@@ -9,9 +9,15 @@ import com.adeies.adeies.enterprise.exception.UpdateEmployeeException;
 import com.adeies.adeies.enterprise.exception.ValidationFaultException;
 import com.adeies.adeies.enterprise.mappers.UpdateEmployeeMapper;
 import com.adeies.adeies.enterprise.model.employee.EmployeeRs;
+import com.adeies.adeies.enterprise.model.employee.searchEmployee.SearchEmployeeRq;
+import com.adeies.adeies.enterprise.model.employee.searchEmployee.SearchEmployeeRs;
 import com.adeies.adeies.enterprise.repository.EmployeeRepo;
+import com.adeies.adeies.enterprise.utils.EmployeeSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -64,5 +70,30 @@ public class EmployeeServiceImpl implements EmployeeService {
         response.setErrorCode(ErrorCode.SUCCESS);
         response.setStatusCode(ErrorCode.SUCCESS.getValue());
         return response;
+    }
+
+    @Override
+    public SearchEmployeeRs searchEmployees(SearchEmployeeRq request) {
+        SearchEmployeeRs response = new SearchEmployeeRs();
+        Specification<Employee> spec = Specification.where(null);
+
+        if (request.getDepartment() != null && !request.getDepartment().isEmpty() && request.getArea() != null && !request.getArea().isEmpty()) {
+            spec = spec.and(EmployeeSpecifications.hasAreaAndDepartment(request.getArea(), request.getDepartment()));
+        }
+        if (request.getDepartment() != null && !request.getDepartment().isEmpty()) {
+            spec = spec.and((EmployeeSpecifications.hasDepartment(request.getDepartment())));
+        }
+        if (request.getPosition() != null && !request.getPosition().isEmpty()) {
+           spec= spec.and(EmployeeSpecifications.hasPosition(request.getPosition()));
+        }
+        if (request.getArea() != null && !request.getArea().isEmpty()) {
+           spec = spec.and(EmployeeSpecifications.hasArea(request.getArea()));
+        }
+
+        response.setWsStatus(new WsStatus(ErrorCode.SUCCESS.getValue(), ErrorCode.SUCCESS));
+        response.setEmployeeList(employeeRepo.findAll(spec));
+
+        return response;
+
     }
 }

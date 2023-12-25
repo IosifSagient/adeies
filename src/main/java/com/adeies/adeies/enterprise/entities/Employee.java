@@ -22,6 +22,7 @@ public class Employee {
     private String lastname;
 
     private String email;
+
     @Column( name = "passwords")
     private String passwords;
     @Column(name = "birthdate")
@@ -29,4 +30,13 @@ public class Employee {
 
     @Column(name = "marital_status",length = 30)
     private String maritalStatus;
+
+    @Column(name="DEPARTMENT")
+    private String department;
+
+    @Column(name="position")
+    private String position;
+
+    @Column(name="area")
+    private String area;
 }

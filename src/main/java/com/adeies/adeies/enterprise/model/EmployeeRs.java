@@ -1,4 +1,4 @@
-package com.adeies.adeies.enterprise.model.employee;
+package com.adeies.adeies.enterprise.model;
 
 import com.adeies.adeies.enterprise.entities.Employee;
 import com.adeies.adeies.enterprise.entities.WsStatus;

@@ -1,6 +1,5 @@
 package com.adeies.adeies.enterprise.exception;
 
-import com.adeies.adeies.enterprise.entities.Employee;
 import com.adeies.adeies.enterprise.enums.ErrorCode;
 
 public class EmployeeSaveException extends ValidationFaultException{

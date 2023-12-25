@@ -1,6 +1,6 @@
 package com.adeies.adeies.enterprise.utils;
 
-import com.adeies.adeies.enterprise.entities.Employee;
+import com.adeies.adeies.enterprise.model.Employee;
 import org.springframework.data.jpa.domain.Specification;
 
 public class EmployeeSpecifications {

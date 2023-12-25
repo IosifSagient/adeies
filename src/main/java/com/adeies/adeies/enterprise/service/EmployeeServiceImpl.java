@@ -1,13 +1,13 @@
 package com.adeies.adeies.enterprise.service;
 
 import com.adeies.adeies.enterprise.dto.EmployeeDto;
-import com.adeies.adeies.enterprise.entities.Employee;
 import com.adeies.adeies.enterprise.entities.WsStatus;
 import com.adeies.adeies.enterprise.enums.ErrorCode;
 import com.adeies.adeies.enterprise.exception.EmployeeSaveException;
 import com.adeies.adeies.enterprise.exception.UpdateEmployeeException;
 import com.adeies.adeies.enterprise.exception.ValidationFaultException;
 import com.adeies.adeies.enterprise.mappers.UpdateEmployeeMapper;
+import com.adeies.adeies.enterprise.model.Employee;
 import com.adeies.adeies.enterprise.model.EmployeeRs;
 import com.adeies.adeies.enterprise.model.searchEmployee.SearchEmployeeRq;
 import com.adeies.adeies.enterprise.model.searchEmployee.SearchEmployeeRs;
@@ -46,11 +46,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public WsStatus updateEmployee(EmployeeDto dto) {
         WsStatus response = new WsStatus();
-         employeeRepo.findById(
+        Employee currentEmp = employeeRepo.findById(
                  dto.employeeId())
                          .orElseThrow(()-> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(),ErrorCode.USER_NOT_FOUND.toString()));
         try{
-               Employee newData = updateEmployeeMapper.toEntity(dto);
+               Employee newData = updateEmployeeMapper.toEntity(dto,currentEmp);
                 employeeRepo.save(newData) ;
                 response.setStatusCode(ErrorCode.SUCCESS.getValue());
                 response.setErrorCode(ErrorCode.SUCCESS);

@@ -1,6 +1,6 @@
 package com.adeies.adeies.enterprise.repository;
 
-import com.adeies.adeies.enterprise.entities.Employee;
+import com.adeies.adeies.enterprise.model.Employee;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

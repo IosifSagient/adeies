@@ -1,5 +1,6 @@
 package com.adeies.adeies.enterprise.entities;
 
+import com.adeies.adeies.enterprise.model.Employee;
 import jakarta.persistence.*;
 import lombok.Data;
 

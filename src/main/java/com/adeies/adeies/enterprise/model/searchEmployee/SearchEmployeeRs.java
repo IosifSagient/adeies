@@ -1,7 +1,7 @@
 package com.adeies.adeies.enterprise.model.searchEmployee;
 
-import com.adeies.adeies.enterprise.entities.Employee;
 import com.adeies.adeies.enterprise.entities.WsStatus;
+import com.adeies.adeies.enterprise.model.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

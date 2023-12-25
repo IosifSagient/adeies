@@ -8,6 +8,8 @@ import com.adeies.adeies.enterprise.model.searchEmployee.SearchEmployeeRq;
 import com.adeies.adeies.enterprise.model.searchEmployee.SearchEmployeeRs;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface EmployeeService {
 

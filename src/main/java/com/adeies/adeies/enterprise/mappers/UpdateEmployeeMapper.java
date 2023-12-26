@@ -1,7 +1,7 @@
 package com.adeies.adeies.enterprise.mappers;
 
 import com.adeies.adeies.enterprise.dto.EmployeeDto;
-import com.adeies.adeies.enterprise.model.Employee;
+import com.adeies.adeies.enterprise.entities.EmployeeCard;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -16,9 +16,6 @@ public interface UpdateEmployeeMapper {
 
     UpdateEmployeeMapper INSTANCE = Mappers.getMapper(UpdateEmployeeMapper.class);
 
-    @Mapping(target = "employeeId", ignore = true)
-    EmployeeDto toDto(Employee employee);
-
-    @Mapping(target = "employeeId", ignore = true)
-    Employee toEntity(EmployeeDto dto, @MappingTarget Employee currentEmployee);
+    @Mapping(target = "id", ignore = true)
+    EmployeeCard toEntity(EmployeeCard dto, @MappingTarget EmployeeCard currentEmployee);
 }

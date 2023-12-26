@@ -9,11 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WsStatus {
-
     private String statusCode;
     private ErrorCode errorCode;
-
-
-
-
 }

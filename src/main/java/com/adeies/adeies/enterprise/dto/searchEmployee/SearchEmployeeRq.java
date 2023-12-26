@@ -1,4 +1,4 @@
-package com.adeies.adeies.enterprise.model.searchEmployee;
+package com.adeies.adeies.enterprise.dto.searchEmployee;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,5 +11,4 @@ public class SearchEmployeeRq {
     private String department;
     private String area;
     private String position;
-
 }

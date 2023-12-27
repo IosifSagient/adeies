@@ -1,8 +1,8 @@
 package com.adeies.adeies.enterprise.entities;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -17,20 +17,33 @@ public class EmployeeCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstname;
+    @NotBlank()
+    @NotNull()
+    private String firstName;
 
-    private String lastname;
+    @NotBlank()
+    @NotNull()
+    private String lastName;
 
-    private Date birthdate;
+    @NotNull()
+    private Date birthDate;
 
     @OneToOne(targetEntity = Department.class)
     @JoinColumn(referencedColumnName = "id")
     private Department department;
 
+    @NotBlank()
+    @NotNull()
     private String position;
 
+    @NotBlank()
+    @NotNull()
     private String area;
 
-    @Length(min = 0, max = 30)
+    @NotBlank()
+    @NotNull()
+    @Length(min = 1, max = 30)
     private String maritalStatus;
+
+
 }

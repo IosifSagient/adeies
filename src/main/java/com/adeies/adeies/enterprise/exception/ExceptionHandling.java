@@ -4,10 +4,8 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,13 +33,9 @@ public class ExceptionHandling {
     public ResponseEntity<Object> handleValidationExceptions(ConstraintViolationException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getConstraintViolations().forEach((error) -> {
-            errors.put(error.getPropertyPath().toString(), error.getMessageTemplate());
+            errors.put(error.getPropertyPath().toString(), error.getMessage());
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {RuntimeException.class})
-    public ResponseEntity<Object> handleBadObject( RuntimeException ex){
-        return new ResponseEntity<>("Oopsie, something went wrong.", HttpStatus.BAD_REQUEST);
-    }
 }

@@ -1,4 +1,4 @@
-package com.adeies.adeies.enterprise.dto;
+package com.adeies.adeies.enterprise.dto.employee;
 
 import java.util.Date;
 

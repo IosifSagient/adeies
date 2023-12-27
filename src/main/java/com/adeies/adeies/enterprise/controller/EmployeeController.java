@@ -1,11 +1,11 @@
 package com.adeies.adeies.enterprise.controller;
 
-import com.adeies.adeies.enterprise.dto.EmployeeDto;
-import com.adeies.adeies.enterprise.dto.EmployeeRs;
+import com.adeies.adeies.enterprise.dto.employee.EmployeeDto;
+import com.adeies.adeies.enterprise.dto.employee.EmployeeRs;
+import com.adeies.adeies.enterprise.dto.employee.searchEmployee.SearchEmployeeRq;
+import com.adeies.adeies.enterprise.dto.employee.searchEmployee.SearchEmployeeRs;
 import com.adeies.adeies.enterprise.entities.EmployeeCard;
 import com.adeies.adeies.enterprise.entities.WsStatus;
-import com.adeies.adeies.enterprise.dto.searchEmployee.SearchEmployeeRq;
-import com.adeies.adeies.enterprise.dto.searchEmployee.SearchEmployeeRs;
 import com.adeies.adeies.enterprise.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

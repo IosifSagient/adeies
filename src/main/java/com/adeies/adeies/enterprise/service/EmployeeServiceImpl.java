@@ -1,15 +1,14 @@
 package com.adeies.adeies.enterprise.service;
 
-import com.adeies.adeies.enterprise.dto.EmployeeDto;
-import com.adeies.adeies.enterprise.dto.searchEmployee.SearchEmployeeRq;
-import com.adeies.adeies.enterprise.dto.searchEmployee.SearchEmployeeRs;
+import com.adeies.adeies.enterprise.dto.employee.EmployeeDto;
+import com.adeies.adeies.enterprise.dto.employee.EmployeeRs;
+import com.adeies.adeies.enterprise.dto.employee.searchEmployee.SearchEmployeeRq;
+import com.adeies.adeies.enterprise.dto.employee.searchEmployee.SearchEmployeeRs;
 import com.adeies.adeies.enterprise.entities.EmployeeCard;
 import com.adeies.adeies.enterprise.entities.WsStatus;
 import com.adeies.adeies.enterprise.enums.ErrorCode;
-import com.adeies.adeies.enterprise.exception.UpdateEmployeeException;
 import com.adeies.adeies.enterprise.exception.ValidationFaultException;
 import com.adeies.adeies.enterprise.mappers.UpdateEmployeeMapper;
-import com.adeies.adeies.enterprise.dto.EmployeeRs;
 import com.adeies.adeies.enterprise.repository.EmployeeRepo;
 import com.adeies.adeies.enterprise.utils.EmployeeSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,32 +1,45 @@
 package com.adeies.adeies.enterprise.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.Date;
+
 
 @Data
 @Entity
-@Table(name = "DAYS_OFF")
-public class DaysOff {
+@Table(name = "TRANSACTIONS")
+public class Transactions {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(referencedColumnName = "id")
-    @Id
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @JoinColumn(referencedColumnName = "id")
+    private User approvedBy;
 
     @OneToOne(fetch = FetchType.LAZY, targetEntity = DaysOffDefinition.class, optional = false)
     @JoinColumn(referencedColumnName = "id")
-    @Id
     private DaysOffDefinition definition;
 
     @NotBlank
     @NotNull
-    private Long available;
+    private Date startDate;
 
     @NotBlank
     @NotNull
-    @Min(value = 1)
-    private Long total;
+    private Date endDate;
+
+    @NotBlank
+    @NotNull
+    private int status; // TODO: enum Approved/Rejected/Pending
+
+
 }

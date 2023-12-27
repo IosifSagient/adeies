@@ -1,4 +1,4 @@
-package com.adeies.adeies.enterprise.dto.searchEmployee;
+package com.adeies.adeies.enterprise.dto.employee.searchEmployee;
 
 import com.adeies.adeies.enterprise.entities.EmployeeCard;
 import com.adeies.adeies.enterprise.entities.WsStatus;

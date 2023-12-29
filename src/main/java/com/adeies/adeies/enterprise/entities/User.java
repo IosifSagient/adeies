@@ -34,7 +34,7 @@ public class User {
     @NotNull
     private String language;
 
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = EmployeeCard.class, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = EmployeeCard.class, cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id")
     @NotNull
     private EmployeeCard employeeCard;

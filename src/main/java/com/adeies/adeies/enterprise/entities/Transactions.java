@@ -1,5 +1,6 @@
 package com.adeies.adeies.enterprise.entities;
 
+import com.adeies.adeies.enterprise.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -39,7 +40,6 @@ public class Transactions {
 
     @NotBlank
     @NotNull
-    private int status; // TODO: enum Approved/Rejected/Pending
-
+    private Status status; // TODO: enum Approved/Rejected/Pending
 
 }

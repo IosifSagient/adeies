@@ -1,8 +1,8 @@
 package com.adeies.adeies.enterprise.entities;
 
+import com.adeies.adeies.enterprise.pojos.DaysOffAvailablePK;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "DAYS_OFF")
+@IdClass(DaysOffAvailablePK.class)
 public class DaysOff {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(referencedColumnName = "id")
@@ -21,12 +22,13 @@ public class DaysOff {
     @Id
     private DaysOffDefinition definition;
 
-    @NotBlank
-    @NotNull
-    private Long available;
 
-    @NotBlank
+    @NotNull
+    private Integer available;
+
+
     @NotNull
     @Min(value = 1)
-    private Long total;
+    private Integer total;
 }
+

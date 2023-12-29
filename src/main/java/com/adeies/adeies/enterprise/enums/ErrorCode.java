@@ -6,6 +6,7 @@ public enum ErrorCode {
     SUCCESS("0000"),
     WRONG_EMPLOYEE_DATA("9991"),
     USER_NOT_FOUND("9923"),
+    DAY_OFF_TYPE_NOT_FOUND("9453"),
     ERROR_UPDATING_EMPLOYEE ("9992") ;
     private final String errorCode;
 

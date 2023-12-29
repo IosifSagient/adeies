@@ -15,6 +15,6 @@ public interface UpdateEmployeeMapper {
 
     UpdateEmployeeMapper INSTANCE = Mappers.getMapper(UpdateEmployeeMapper.class);
 
-    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "id", ignore = true)
     EmployeeCard toEntity(EmployeeCard dto, @MappingTarget EmployeeCard currentEmployee);
 }

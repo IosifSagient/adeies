@@ -11,16 +11,19 @@ import com.adeies.adeies.enterprise.exception.ValidationFaultException;
 import com.adeies.adeies.enterprise.mappers.UpdateEmployeeMapper;
 import com.adeies.adeies.enterprise.repository.EmployeeRepo;
 import com.adeies.adeies.enterprise.utils.EmployeeSpecifications;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final UpdateEmployeeMapper updateEmployeeMapper = UpdateEmployeeMapper.INSTANCE;
     @Autowired
-    private EmployeeRepo employeeRepo;
+    private final EmployeeRepo employeeRepo;
 
     @Override
     public EmployeeRs createEmployee(EmployeeCard employee) {

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -32,14 +33,18 @@ public class Transactions {
 
     @NotBlank
     @NotNull
-    private Date startDate;
+    private LocalDate startDate;
 
     @NotBlank
     @NotNull
-    private Date endDate;
+    private LocalDate endDate;
 
     @NotBlank
     @NotNull
     private Status status; // TODO: enum Approved/Rejected/Pending
 
+    @NotNull
+    private Integer days;
+
+    private String description;
 }

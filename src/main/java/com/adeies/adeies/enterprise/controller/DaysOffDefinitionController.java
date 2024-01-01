@@ -19,8 +19,10 @@ public class DaysOffDefinitionController {
     private DaysOffDefinitionService daysOffDefinitionService;
 
     @PostMapping("/createDayOff")
-    public ResponseEntity<DaysOffDefinition> createDayOffCategory(@RequestBody DaysOffDefinition daysOffDefinition) {
-        DaysOffDefinition newCategory = daysOffDefinitionService.createDayOffCategory(daysOffDefinition);
+    public ResponseEntity<DaysOffDefinition> createDayOffCategory(
+            @RequestBody DaysOffDefinition daysOffDefinition) {
+        DaysOffDefinition newCategory = daysOffDefinitionService.createDayOffCategory(
+                daysOffDefinition);
         return new ResponseEntity<>(newCategory, HttpStatus.OK);
     }
 

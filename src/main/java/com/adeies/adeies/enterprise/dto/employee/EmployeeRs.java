@@ -6,5 +6,5 @@ import lombok.Data;
 
 @Data
 public class EmployeeRs extends WsStatus {
-   private EmployeeCard employee;
+    private EmployeeCard employee;
 }

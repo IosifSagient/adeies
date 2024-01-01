@@ -12,9 +12,9 @@ public class ValidationFaultException extends RuntimeException implements Serial
     private final String errorCode;
     private final String errorDescription;
 
-    public ValidationFaultException(String errorCode, String errorDescription){
-        super(errorCode + ":" + errorDescription );
+    public ValidationFaultException(String errorCode, String errorDescription) {
+        super(errorCode + ":" + errorDescription);
         this.errorCode = errorCode;
-        this.errorDescription=errorDescription;
+        this.errorDescription = errorDescription;
     }
 }

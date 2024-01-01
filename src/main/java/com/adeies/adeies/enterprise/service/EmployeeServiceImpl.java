@@ -11,7 +11,6 @@ import com.adeies.adeies.enterprise.exception.ValidationFaultException;
 import com.adeies.adeies.enterprise.mappers.UpdateEmployeeMapper;
 import com.adeies.adeies.enterprise.repository.EmployeeRepo;
 import com.adeies.adeies.enterprise.utils.EmployeeSpecifications;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,14 +38,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public WsStatus updateEmployee(EmployeeCard dto) {
         WsStatus response = new WsStatus();
-        EmployeeCard currentEmp = employeeRepo.findById(
-                        dto.getId())
-                .orElseThrow(() -> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(), ErrorCode.USER_NOT_FOUND.toString()));
-            EmployeeCard newData = updateEmployeeMapper.toEntity(dto, currentEmp);
-            employeeRepo.save(newData);
-            response.setStatusCode(ErrorCode.SUCCESS.getValue());
-            response.setErrorCode(ErrorCode.SUCCESS);
-            return response;
+        EmployeeCard currentEmp = employeeRepo.findById(dto.getId()).orElseThrow(
+                () -> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(),
+                                                   ErrorCode.USER_NOT_FOUND.toString()));
+        EmployeeCard newData = updateEmployeeMapper.toEntity(dto, currentEmp);
+        employeeRepo.save(newData);
+        response.setStatusCode(ErrorCode.SUCCESS.getValue());
+        response.setErrorCode(ErrorCode.SUCCESS);
+        return response;
     }
 
     @Override
@@ -63,8 +62,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         SearchEmployeeRs response = new SearchEmployeeRs();
         Specification<EmployeeCard> spec = Specification.where(null);
 
-        if (request.getDepartment() != null && !request.getDepartment().isEmpty() && request.getArea() != null && !request.getArea().isEmpty()) {
-            spec = spec.and(EmployeeSpecifications.hasAreaAndDepartment(request.getArea(), request.getDepartment()));
+        if (request.getDepartment() != null && !request.getDepartment()
+                                                       .isEmpty() && request.getArea() != null && !request.getArea()
+                                                                                                          .isEmpty()) {
+            spec = spec.and(EmployeeSpecifications.hasAreaAndDepartment(request.getArea(),
+                                                                        request.getDepartment()));
         }
         if (request.getDepartment() != null && !request.getDepartment().isEmpty()) {
             spec = spec.and((EmployeeSpecifications.hasDepartment(request.getDepartment())));

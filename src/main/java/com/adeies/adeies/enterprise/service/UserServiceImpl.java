@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
-        var user = (User) ((UsernamePasswordAuthenticationToken)connectedUser).getPrincipal();
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
 
         // check if the current password is correct
         if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {

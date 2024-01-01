@@ -13,16 +13,14 @@ import java.util.Map;
 @ControllerAdvice
 public class ExceptionHandling {
     @ExceptionHandler(value = {ValidationFaultException.class})
-    public ResponseEntity<Object> handleCustomException( ValidationFaultException ex){
-         ErrorsPattern errorsPattern = new ErrorsPattern(
-                 ex.getErrorCode(),
-                 ex.getErrorDescription()
-         );
+    public ResponseEntity<Object> handleCustomException(ValidationFaultException ex) {
+        ErrorsPattern errorsPattern = new ErrorsPattern(ex.getErrorCode(),
+                                                        ex.getErrorDescription());
         return new ResponseEntity<>(errorsPattern, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {InvalidDataAccessApiUsageException.class})
-    public ResponseEntity<Object> handleBadObject( InvalidDataAccessApiUsageException ex){
+    public ResponseEntity<Object> handleBadObject(InvalidDataAccessApiUsageException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

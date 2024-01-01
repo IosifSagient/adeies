@@ -10,5 +10,6 @@ import java.security.Principal;
 public interface UserService {
 
     User createUser(User user);
+
     void changePassword(ChangePasswordRequest request, Principal connectedUser);
 }

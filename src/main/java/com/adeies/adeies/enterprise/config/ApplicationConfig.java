@@ -4,7 +4,6 @@ import com.adeies.adeies.enterprise.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,8 +20,8 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepo.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> userRepo.findByEmail(username).orElseThrow(
+                () -> new UsernameNotFoundException("User not found"));
     }
 
     @Bean
@@ -32,15 +31,18 @@ public class ApplicationConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
 //    @Bean
 //    public AuditorAware<Integer> auditorAware() {
 //        return new ApplicationAuditAware();
 //    }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+            throws Exception {
         return config.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

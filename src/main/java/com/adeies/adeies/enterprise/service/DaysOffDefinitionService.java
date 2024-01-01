@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface DaysOffDefinitionService {
-    DaysOffDefinition createDayOffCategory (DaysOffDefinition daysOffDefinition);
+    DaysOffDefinition createDayOffCategory(DaysOffDefinition daysOffDefinition);
 }

@@ -20,18 +20,14 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "USERS")
-public class User implements UserDetails{
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotNull
     private Role role;
-
-
-    private String username;
 
     @NotBlank
     @NotNull
@@ -53,10 +49,6 @@ public class User implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
-    }
-    @Override
-    public String getPassword() {
-        return password;
     }
 
     @Override

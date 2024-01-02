@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchEmployeeRq {
-    private String department;
+    private Long department;
     private String area;
     private String position;
 }

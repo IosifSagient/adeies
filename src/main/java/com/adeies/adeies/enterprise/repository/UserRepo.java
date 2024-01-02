@@ -14,4 +14,11 @@ public interface UserRepo extends JpaRepository<User, Long>, JpaSpecificationExe
     List<User> findAll(Specification<User> spec);
 
     Optional<User> findByEmail(String email);
+
+
+//    @Query(value = "SELECT * FROM USERS u WHERE (EMPLOYEE_CARD_ID IN (SELECT ID FROM EMPLOYEE_CARD WHERE DEPARTMENT_ID = ?1)AND ROLE = 2) OR ROLE = 1", nativeQuery = true)
+//    List<User> findAllByDeptId(Long deptId);
+//    // select emplpoyeeID from employeecard where department.id = tade
+//
+
 }

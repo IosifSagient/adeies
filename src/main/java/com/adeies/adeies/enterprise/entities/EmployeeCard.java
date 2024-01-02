@@ -28,7 +28,7 @@ public class EmployeeCard {
     @NotNull()
     private Date birthDate;
 
-    @OneToOne(targetEntity = Department.class)
+    @ManyToOne(targetEntity = Department.class)
     @JoinColumn(referencedColumnName = "id")
     private Department department;
 

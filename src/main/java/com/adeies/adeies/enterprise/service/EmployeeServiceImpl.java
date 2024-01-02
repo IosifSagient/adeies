@@ -53,13 +53,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeCard> searchEmployees(SearchEmployeeRq request) {
         Specification<EmployeeCard> spec = Specification.where(null);
 
-        if (request.getDepartment() != null && !request.getDepartment()
-                                                       .isEmpty() && request.getArea() != null && !request.getArea()
-                                                                                                          .isEmpty()) {
+        if (request.getDepartment() != null && request.getArea() != null && !request.getArea()
+                                                                                    .isEmpty()) {
             spec = spec.and(EmployeeSpecifications.hasAreaAndDepartment(request.getArea(),
                                                                         request.getDepartment()));
         }
-        if (request.getDepartment() != null && !request.getDepartment().isEmpty()) {
+        if (request.getDepartment() != null) {
             spec = spec.and((EmployeeSpecifications.hasDepartment(request.getDepartment())));
         }
         if (request.getPosition() != null && !request.getPosition().isEmpty()) {

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,26 +34,28 @@ public class TransactionsServiceImpl implements TransactionsService {
                 () -> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(),
                                                    ErrorCode.USER_NOT_FOUND.toString()));
 
-        DaysOffDefinition dayOffType = daysOffDefinitionRepo.findById(
-                dayOffRq.getDaysOffDefinitionId()).orElseThrow(
-                () -> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(),
-                                                   ErrorCode.DAY_OFF_TYPE_NOT_FOUND.toString()));
+        DaysOffDefinition dayOffType = daysOffDefinitionRepo
+                .findById(dayOffRq.getDaysOffDefinitionId()).orElseThrow(
+                        () -> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(),
+                                                           ErrorCode.DAY_OFF_TYPE_NOT_FOUND.toString()));
 
         Transactions transaction = new Transactions();
         transaction.setUser(user);
-        transaction.setDescription(dayOffRq.getDescription());
-        transaction.setStatus(Status.PENDING);
+        transaction.setApprovedBy(null);
         transaction.setDefinition(dayOffType);
         transaction.setStartDate(dayOffRq.getStartDate());
         transaction.setEndDate(dayOffRq.getEndDate());
+        transaction.setStatus(Status.PENDING);
         transaction.setDays(getDayDifference(dayOffRq.getStartDate(), dayOffRq.getEndDate()));
+        transaction.setDescription(dayOffRq.getDescription());
+        trxRepo.save(transaction);
+
     }
 
-    @Override
-    public List<Transactions> getDepartmentPendingTransactions(String jwt) {
+
+    public Long getDptIdFromJwt(String jwt) {
         jwt = jwt.substring(7);
-        String departmentId = jwtService.extractDepartmentId(jwt);
-        return trxRepo.findAll();
+        return Long.parseLong(jwtService.extractDepartmentId(jwt));
     }
 
     Integer getDayDifference(LocalDate startDate, LocalDate endDate) {

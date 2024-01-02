@@ -2,7 +2,6 @@ package com.adeies.adeies.enterprise.entities;
 
 import com.adeies.adeies.enterprise.enums.Status;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -30,15 +29,12 @@ public class Transactions {
     @JoinColumn(referencedColumnName = "id")
     private DaysOffDefinition definition;
 
-    @NotBlank
     @NotNull
     private LocalDate startDate;
 
-    @NotBlank
     @NotNull
     private LocalDate endDate;
 
-    @NotBlank
     @NotNull
     private Status status; // TODO: enum Approved/Rejected/Pending
 

@@ -1,6 +1,5 @@
 package com.adeies.adeies.enterprise.entities;
 
-import com.adeies.adeies.enterprise.enums.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WsStatus {
-    private String statusCode;
-    private ErrorCode errorCode;
+public class SuccessResponse {
+    private String message = "Operation Successful.";
+    private Object data = "";
 }

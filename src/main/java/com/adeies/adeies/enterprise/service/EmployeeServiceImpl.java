@@ -3,9 +3,7 @@ package com.adeies.adeies.enterprise.service;
 import com.adeies.adeies.enterprise.dto.employee.EmployeeDto;
 import com.adeies.adeies.enterprise.dto.employee.EmployeeRs;
 import com.adeies.adeies.enterprise.dto.employee.searchEmployee.SearchEmployeeRq;
-import com.adeies.adeies.enterprise.dto.employee.searchEmployee.SearchEmployeeRs;
 import com.adeies.adeies.enterprise.entities.EmployeeCard;
-import com.adeies.adeies.enterprise.entities.WsStatus;
 import com.adeies.adeies.enterprise.enums.ErrorCode;
 import com.adeies.adeies.enterprise.exception.ValidationFaultException;
 import com.adeies.adeies.enterprise.mappers.UpdateEmployeeMapper;
@@ -15,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -30,36 +30,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeRepo.save(employee);
         response.setEmployee(employee);
-        response.setStatusCode(ErrorCode.SUCCESS.getValue());
-        response.setErrorCode(ErrorCode.SUCCESS);
         return response;
     }
 
     @Override
-    public WsStatus updateEmployee(EmployeeCard dto) {
-        WsStatus response = new WsStatus();
+    public EmployeeRs updateEmployee(EmployeeCard dto) {
+        EmployeeRs response = new EmployeeRs();
         EmployeeCard currentEmp = employeeRepo.findById(dto.getId()).orElseThrow(
                 () -> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(),
                                                    ErrorCode.USER_NOT_FOUND.toString()));
         EmployeeCard newData = updateEmployeeMapper.toEntity(dto, currentEmp);
         employeeRepo.save(newData);
-        response.setStatusCode(ErrorCode.SUCCESS.getValue());
-        response.setErrorCode(ErrorCode.SUCCESS);
         return response;
     }
 
     @Override
-    public WsStatus deleteEmployee(EmployeeDto dto) {
-        WsStatus response = new WsStatus();
+    public void deleteEmployee(EmployeeDto dto) {
         employeeRepo.deleteById(dto.employeeId());
-        response.setErrorCode(ErrorCode.SUCCESS);
-        response.setStatusCode(ErrorCode.SUCCESS.getValue());
-        return response;
     }
 
     @Override
-    public SearchEmployeeRs searchEmployees(SearchEmployeeRq request) {
-        SearchEmployeeRs response = new SearchEmployeeRs();
+    public List<EmployeeCard> searchEmployees(SearchEmployeeRq request) {
         Specification<EmployeeCard> spec = Specification.where(null);
 
         if (request.getDepartment() != null && !request.getDepartment()
@@ -77,11 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (request.getArea() != null && !request.getArea().isEmpty()) {
             spec = spec.and(EmployeeSpecifications.hasArea(request.getArea()));
         }
-
-        response.setWsStatus(new WsStatus(ErrorCode.SUCCESS.getValue(), ErrorCode.SUCCESS));
-        response.setEmployeeList(employeeRepo.findAll(spec));
-
-        return response;
+        return employeeRepo.findAll(spec);
 
     }
 }

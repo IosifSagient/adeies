@@ -35,5 +35,4 @@ public class ExceptionHandling {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
-
 }

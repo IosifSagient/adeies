@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 
@@ -46,6 +47,9 @@ public class User implements UserDetails {
     @NotNull
     private EmployeeCard employeeCard;
 
+    @Builder.Default
+    private LocalDateTime credentialsExpiryDate = LocalDateTime.now().plusDays(120);
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
@@ -66,9 +70,10 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
+    @Override // TODO: Implement expiration date reminder and password change etc...
     public boolean isCredentialsNonExpired() {
-        return true;
+        LocalDateTime now = LocalDateTime.now();
+        return this.credentialsExpiryDate.isAfter(now);
     }
 
     @Override

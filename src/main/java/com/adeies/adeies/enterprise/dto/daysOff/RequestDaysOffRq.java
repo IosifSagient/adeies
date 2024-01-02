@@ -1,4 +1,4 @@
-package com.adeies.adeies.enterprise.dto.DaysOff;
+package com.adeies.adeies.enterprise.dto.daysOff;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class DayOffRq {
+public class RequestDaysOffRq {
 
     @NotNull
     private Long userId;

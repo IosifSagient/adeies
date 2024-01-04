@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,8 +59,8 @@ public class TransactionsController {
     @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
     @GetMapping("/get/by-department")
     public ResponseEntity<SuccessResponse> getDepartmentPendingTransactions(
-            @RequestHeader(value = "status", required = false) Status status,
-            @AuthenticationPrincipal User user) {
+            @RequestHeader(value = "status", required = false) Status status, Authentication auth) {
+        User user = (User) auth.getPrincipal();
         Long deptId = user.getEmployeeCard().getDepartment().getId();
         List<Transactions> transactionsList = status != null ? trxRepo.getTransactionsByUser_EmployeeCard_Department_IdAndStatus(
                 deptId, status) : trxRepo.getTransactionsByUser_EmployeeCard_Department_Id(deptId);

@@ -1,6 +1,7 @@
 package com.adeies.adeies.enterprise.entities;
 
 import com.adeies.adeies.enterprise.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,10 +29,12 @@ public class User implements UserDetails {
     private Long id;
 
     @NotNull
+    @JsonIgnore
     private Role role;
 
     @NotBlank
     @NotNull
+    @JsonIgnore
     private String password;
 
     @NotBlank

@@ -9,10 +9,6 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class RequestDaysOffRq {
-
-    @NotNull
-    private Long userId;
-
     @NotNull
     private Long daysOffDefinitionId;
 
@@ -22,7 +18,5 @@ public class RequestDaysOffRq {
     @NotNull
     private LocalDate endDate;
 
-    private String description;
-
-
+    private String comment;
 }

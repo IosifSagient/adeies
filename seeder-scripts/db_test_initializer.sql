@@ -47,6 +47,24 @@ VALUES (3, 'General', 'General');
 INSERT INTO public.department (id, description, wording)
 VALUES (4, 'Technical Support', 'Technical Support');
 
+
+INSERT INTO public.employee_card (birth_date, department_id, id, area, first_name, last_name,
+                                  marital_status, position)
+VALUES ('1986-03-09 02:00:00.000000', 1, 1, 'Sth mana sou', 'Losif3', 'Sagient3',
+        'eeeeeeeeeeeeeeeeeeeeeeeee', 'dev');
+
+INSERT INTO public.users (role, credentials_expiry_date, employee_card_id, id, email, language,
+                          password)
+VALUES (2, '2024-05-03 02:39:53.385595', 1, 1, 'lostrif3@gmail.com', 'en-US',
+        '$2a$10$S.qfflR7b4M8ye7URolRj.RzHTsvuKlTMzGE04/hXfRgYA.nzvj5G');
+
+
+
+-- UPDATE public.users
+-- SET employee_card_id = 1
+-- WHERE id = 1;
+
+
 INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
                                  id, user_id, description)
 VALUES (4, '2024-01-17', '2024-01-14', 1, null, 1, 3, 1, 'Testadeia');

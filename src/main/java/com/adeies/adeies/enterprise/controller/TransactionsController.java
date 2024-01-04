@@ -41,7 +41,8 @@ public class TransactionsController {
 
     @GetMapping("/get/free")
     public ResponseEntity<SuccessResponse> free(
-            @RequestHeader(value = "status", required = false) Status status) {
+            @RequestHeader(value = "status", required = false) Status status, Authentication auth) {
+        System.out.println("auth.lol??? " + auth);
         List<Transactions> transactionsList = status != null ? trxRepo.findTransactionsByStatus(
                 status) : trxRepo.findAll();
         return ResponseEntity.ok(new SuccessResponse("Parta.", transactionsList));

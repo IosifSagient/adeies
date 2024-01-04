@@ -53,6 +53,7 @@ public class User implements UserDetails {
     @Builder.Default
     private LocalDateTime credentialsExpiryDate = LocalDateTime.now().plusDays(120);
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();

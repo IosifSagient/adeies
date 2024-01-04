@@ -1,6 +1,7 @@
 package com.adeies.adeies.enterprise.entities;
 
 import com.adeies.adeies.enterprise.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,15 +18,17 @@ public class Transactions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(referencedColumnName = "id")
     private User user;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(referencedColumnName = "id")
     private User approvedBy;
 
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = DaysOffDefinition.class, optional = false)
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = DaysOffDefinition.class, optional = false)
     @JoinColumn(referencedColumnName = "id")
     private DaysOffDefinition definition;
 
@@ -41,5 +44,5 @@ public class Transactions {
     @NotNull
     private Integer days;
 
-    private String description;
+    private String comment;
 }

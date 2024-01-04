@@ -1,6 +1,5 @@
 package com.adeies.adeies.enterprise.service;
 
-import com.adeies.adeies.enterprise.config.JwtService;
 import com.adeies.adeies.enterprise.dto.daysOff.RequestDaysOffRq;
 import com.adeies.adeies.enterprise.entities.DaysOffDefinition;
 import com.adeies.adeies.enterprise.entities.Transactions;
@@ -10,7 +9,6 @@ import com.adeies.adeies.enterprise.enums.Status;
 import com.adeies.adeies.enterprise.exception.ValidationFaultException;
 import com.adeies.adeies.enterprise.repository.DaysOffDefinitionRepo;
 import com.adeies.adeies.enterprise.repository.TransactionsRepo;
-import com.adeies.adeies.enterprise.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,22 +20,15 @@ import java.time.temporal.ChronoUnit;
 @RequiredArgsConstructor
 public class TransactionsServiceImpl implements TransactionsService {
 
-    private final UserRepo userRepo;
     private final DaysOffDefinitionRepo daysOffDefinitionRepo;
-    private final JwtService jwtService;
     private final TransactionsRepo trxRepo;
 
     @Override
-    public void requestDaysOff(RequestDaysOffRq dayOffRq) {
-
-        User user = userRepo.findById(dayOffRq.getUserId()).orElseThrow(
+    public void requestDaysOff(RequestDaysOffRq dayOffRq, User user) {
+        DaysOffDefinition dayOffType = daysOffDefinitionRepo.findById(
+                dayOffRq.getDaysOffDefinitionId()).orElseThrow(
                 () -> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(),
-                                                   ErrorCode.USER_NOT_FOUND.toString()));
-
-        DaysOffDefinition dayOffType = daysOffDefinitionRepo
-                .findById(dayOffRq.getDaysOffDefinitionId()).orElseThrow(
-                        () -> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(),
-                                                           ErrorCode.DAY_OFF_TYPE_NOT_FOUND.toString()));
+                                                   ErrorCode.DAY_OFF_TYPE_NOT_FOUND.toString()));
 
         Transactions transaction = new Transactions();
         transaction.setUser(user);
@@ -47,15 +38,8 @@ public class TransactionsServiceImpl implements TransactionsService {
         transaction.setEndDate(dayOffRq.getEndDate());
         transaction.setStatus(Status.PENDING);
         transaction.setDays(getDayDifference(dayOffRq.getStartDate(), dayOffRq.getEndDate()));
-        transaction.setDescription(dayOffRq.getDescription());
+        transaction.setComment(dayOffRq.getComment());
         trxRepo.save(transaction);
-
-    }
-
-
-    public Long getDptIdFromJwt(String jwt) {
-        jwt = jwt.substring(7);
-        return Long.parseLong(jwtService.extractDepartmentId(jwt));
     }
 
     Integer getDayDifference(LocalDate startDate, LocalDate endDate) {

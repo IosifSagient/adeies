@@ -1,6 +1,6 @@
 package com.adeies.adeies.enterprise.service;
 
-import com.adeies.adeies.enterprise.dto.user.ChangePasswordRequest;
+import com.adeies.adeies.enterprise.dto.user.ChangePasswordRq;
 import com.adeies.adeies.enterprise.entities.User;
 import com.adeies.adeies.enterprise.mappers.UpdateEmployeeMapper;
 import com.adeies.adeies.enterprise.repository.UserRepo;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
+    public void changePassword(ChangePasswordRq request, Principal connectedUser) {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
 
         // check if the current password is correct

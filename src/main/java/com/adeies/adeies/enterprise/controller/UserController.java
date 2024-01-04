@@ -1,6 +1,6 @@
 package com.adeies.adeies.enterprise.controller;
 
-import com.adeies.adeies.enterprise.dto.user.ChangePasswordRequest;
+import com.adeies.adeies.enterprise.dto.user.ChangePasswordRq;
 import com.adeies.adeies.enterprise.entities.User;
 import com.adeies.adeies.enterprise.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PatchMapping
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request,
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRq request,
                                             Principal connectedUser) {
         userService.changePassword(request, connectedUser);
         return ResponseEntity.ok().build();

@@ -9,7 +9,7 @@ import java.security.Principal;
 @Service
 public interface UserService {
 
-    User createUser(User user);
+    User createEmployee(User user);
 
     void changePassword(ChangePasswordRq request, Principal connectedUser);
 }

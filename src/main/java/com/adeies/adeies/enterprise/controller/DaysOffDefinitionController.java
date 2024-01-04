@@ -3,7 +3,6 @@ package com.adeies.adeies.enterprise.controller;
 import com.adeies.adeies.enterprise.entities.DaysOffDefinition;
 import com.adeies.adeies.enterprise.service.DaysOffDefinitionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +22,7 @@ public class DaysOffDefinitionController {
             @RequestBody DaysOffDefinition daysOffDefinition) {
         DaysOffDefinition newCategory = daysOffDefinitionService.createDayOffCategory(
                 daysOffDefinition);
-        return new ResponseEntity<>(newCategory, HttpStatus.OK);
+        return ResponseEntity.ok(newCategory);
     }
 
 }

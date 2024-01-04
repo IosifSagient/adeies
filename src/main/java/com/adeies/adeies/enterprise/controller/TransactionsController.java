@@ -43,7 +43,7 @@ public class TransactionsController {
             @RequestHeader(value = "status", required = false) Status status) {
         List<Transactions> transactionsList = status != null ? trxRepo.findTransactionsByStatus(
                 status) : trxRepo.findAll();
-        return new ResponseEntity<>(new SuccessResponse("Parta.", transactionsList), HttpStatus.OK);
+        return ResponseEntity.ok(new SuccessResponse("Parta.", transactionsList));
     }
 
     @Secured("ROLE_ADMIN")
@@ -52,7 +52,7 @@ public class TransactionsController {
             @RequestHeader(value = "status", required = false) Status status) {
         List<Transactions> transactionsList = status != null ? trxRepo.findTransactionsByStatus(
                 status) : trxRepo.findAll();
-        return new ResponseEntity<>(new SuccessResponse("Parta.", transactionsList), HttpStatus.OK);
+        return ResponseEntity.ok(new SuccessResponse("Parta.", transactionsList));
     }
 
     @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
@@ -63,7 +63,7 @@ public class TransactionsController {
         Long deptId = user.getEmployeeCard().getDepartment().getId();
         List<Transactions> transactionsList = status != null ? trxRepo.getTransactionsByUser_EmployeeCard_Department_IdAndStatus(
                 deptId, status) : trxRepo.getTransactionsByUser_EmployeeCard_Department_Id(deptId);
-        return new ResponseEntity<>(new SuccessResponse("Parta.", transactionsList), HttpStatus.OK);
+        return ResponseEntity.ok(new SuccessResponse("Parta.", transactionsList));
     }
 
 }

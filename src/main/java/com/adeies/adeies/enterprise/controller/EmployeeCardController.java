@@ -8,7 +8,6 @@ import com.adeies.adeies.enterprise.entities.SuccessResponse;
 import com.adeies.adeies.enterprise.enums.ResponseMessages;
 import com.adeies.adeies.enterprise.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,28 +26,27 @@ public class EmployeeCardController {
     @PostMapping("/createEmployeeCard")
     public ResponseEntity<EmployeeRs> createEmployeeCard(@RequestBody EmployeeCard employee) {
         EmployeeRs newEmployeeRs = employeeService.createEmployee(employee);
-        return new ResponseEntity<>(newEmployeeRs, HttpStatus.OK);
+        return ResponseEntity.ok(newEmployeeRs);
 
     }
 
     @PostMapping("/updateEmployeeCard")
     public ResponseEntity<SuccessResponse> updateEmployeeCard(@RequestBody EmployeeCard dto) {
         employeeService.updateEmployee(dto);
-        return new ResponseEntity<>(new SuccessResponse(), HttpStatus.OK);
+        return ResponseEntity.ok(new SuccessResponse());
     }
 
     @PostMapping("/deleteEmployeeCard")
     public ResponseEntity<SuccessResponse> deleteEmployeeCard(@RequestBody EmployeeDto dto) {
         employeeService.deleteEmployee(dto);
-        return new ResponseEntity<>(new SuccessResponse(ResponseMessages.SUCCESSFUL_DELETE, null),
-                                    HttpStatus.OK);
+        return ResponseEntity.ok(new SuccessResponse(ResponseMessages.SUCCESSFUL_DELETE, null));
     }
 
     @PostMapping("/searchEmployeeCards")
     public ResponseEntity<List<EmployeeCard>> searchEmployeeCard(
             @RequestBody SearchEmployeeRq request) {
-        List<EmployeeCard> response = employeeService.searchEmployees(request);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        List<EmployeeCard> res = employeeService.searchEmployees(request);
+        return ResponseEntity.ok(res);
     }
 
 }

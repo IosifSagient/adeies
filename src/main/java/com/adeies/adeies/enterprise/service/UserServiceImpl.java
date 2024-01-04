@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User createUser(User req) {
+    public User createEmployee(User req) {
         return userRepo.save(req);
     }
 

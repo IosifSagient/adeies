@@ -66,8 +66,8 @@ VALUES (2, '2024-05-03 02:39:53.385595', 1, 1, 'lostrif3@gmail.com', 'en-US',
 
 
 INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
-                                 id, user_id, description)
+                                 id, user_id, comment)
 VALUES (4, '2024-01-17', '2024-01-14', 1, null, 1, 3, 1, 'Testadeia');
 INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
-                                 id, user_id, description)
+                                 id, user_id, comment)
 VALUES (5, '2024-01-18', '2024-01-14', 1, null, 2, 4, 1, 'Testadeia 2: H epistrofh');

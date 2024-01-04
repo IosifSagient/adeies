@@ -19,11 +19,10 @@ public class UserController {
     @Autowired
     private final UserService userService;
 
-    @PostMapping("/createUser")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User res = userService.createUser(user);
+    @PostMapping("/employees/create")
+    public ResponseEntity<User> createEmployee(@RequestBody User user) {
+        User res = userService.createEmployee(user);
         return new ResponseEntity<>(res, HttpStatus.OK);
-
     }
 
     @PatchMapping

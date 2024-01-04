@@ -20,11 +20,7 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
     @NotNull
     private Role role;
-
-//    @NotBlank
-//    @NotNull
-//    private String username;
-
+    
     @NotBlank
     @NotNull
     private String password;

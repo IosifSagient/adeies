@@ -12,6 +12,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 import static com.adeies.adeies.enterprise.enums.Permission.*;
 import static com.adeies.adeies.enterprise.enums.Role.ADMIN;
@@ -51,6 +56,7 @@ public class SecurityConfiguration {
                                              .authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authenticationProvider(authenticationProvider)
+            .addFilterBefore(corsFilter(),UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .logout(logout -> logout.logoutUrl("/api/v1/auth/logout")
                                     .addLogoutHandler(logoutHandler).logoutSuccessHandler(
@@ -58,4 +64,17 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
+
+    @Bean
+    org.springframework.web.filter.CorsFilter corsFilter (){
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.addAllowedOrigin("http://localhost:4200");
+            configuration.setAllowedMethods(Arrays.asList("PUT","POST","GET","DELETE","OPTIONS"));
+            configuration.setAllowedHeaders(Arrays.asList("*"));
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**",configuration);
+            return  new CorsFilter(source);
+        }
+
+
 }

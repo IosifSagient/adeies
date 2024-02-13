@@ -1,5 +1,6 @@
 package com.adeies.adeies.enterprise.config;
 
+import com.adeies.adeies.enterprise.auth.CookieAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,6 +59,7 @@ public class SecurityConfiguration {
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(corsFilter(),UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new CookieAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class)
             .logout(logout -> logout.logoutUrl("/api/v1/auth/logout")
                                     .addLogoutHandler(logoutHandler).logoutSuccessHandler(
                             (request, response, authentication) -> SecurityContextHolder.clearContext()))
@@ -70,7 +72,7 @@ public class SecurityConfiguration {
             CorsConfiguration configuration = new CorsConfiguration();
             configuration.addAllowedOrigin("http://localhost:4200");
             configuration.setAllowedMethods(Arrays.asList("PUT","POST","GET","DELETE","OPTIONS"));
-            configuration.setAllowedHeaders(Arrays.asList("*"));
+            configuration.setAllowedHeaders(Arrays.asList("*")); // change headers to autho 
             UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
             source.registerCorsConfiguration("/**",configuration);
             return  new CorsFilter(source);

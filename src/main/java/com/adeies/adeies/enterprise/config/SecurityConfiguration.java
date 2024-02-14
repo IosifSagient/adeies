@@ -1,6 +1,8 @@
 package com.adeies.adeies.enterprise.config;
 
 import com.adeies.adeies.enterprise.auth.CookieAuthenticationFilter;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,11 +64,25 @@ public class SecurityConfiguration {
             .addFilterBefore(new CookieAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class)
             .logout(logout -> logout.logoutUrl("/api/v1/auth/logout")
                                     .addLogoutHandler(logoutHandler).logoutSuccessHandler(
-                            (request, response, authentication) -> SecurityContextHolder.clearContext()))
+                            (request, response, authentication) ->
+                            {
+                                response.addCookie(createExpiredCookie("Access-Token"));
+                                response.addCookie(createExpiredCookie("Refresh-Token"));
+                                SecurityContextHolder.clearContext();
+                            }
+                            ))
             .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
+    private Cookie createExpiredCookie(String cookieName) {
+        Cookie cookie = new Cookie(cookieName, null);
+        cookie.setMaxAge(0); // Set the cookie expiration to 0 seconds
+        cookie.setPath("/");
+        cookie.setSecure(true); // Enable for HTTPS
+        cookie.setHttpOnly(true);
+        return cookie;
+    }
     @Bean
     org.springframework.web.filter.CorsFilter corsFilter (){
             CorsConfiguration configuration = new CorsConfiguration();

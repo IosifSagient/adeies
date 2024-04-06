@@ -38,9 +38,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeRs response = new EmployeeRs();
         EmployeeCard currentEmp = employeeRepo.findById(dto.getId()).orElseThrow(
                 () -> new ValidationFaultException(ErrorCode.USER_NOT_FOUND.getValue(),
-                                                   ErrorCode.USER_NOT_FOUND.toString()));
+                        ErrorCode.USER_NOT_FOUND.toString()));
         EmployeeCard newData = updateEmployeeMapper.toEntity(dto, currentEmp);
         employeeRepo.save(newData);
+        response.setEmployee(newData);
         return response;
     }
 
@@ -54,9 +55,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         Specification<EmployeeCard> spec = Specification.where(null);
 
         if (request.getDepartment() != null && request.getArea() != null && !request.getArea()
-                                                                                    .isEmpty()) {
+                .isEmpty()) {
             spec = spec.and(EmployeeSpecifications.hasAreaAndDepartment(request.getArea(),
-                                                                        request.getDepartment()));
+                    request.getDepartment()));
         }
         if (request.getDepartment() != null) {
             spec = spec.and((EmployeeSpecifications.hasDepartment(request.getDepartment())));

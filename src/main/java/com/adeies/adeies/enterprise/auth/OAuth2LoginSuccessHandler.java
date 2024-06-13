@@ -3,6 +3,7 @@ package com.adeies.adeies.enterprise.auth;
 import com.adeies.adeies.enterprise.entities.User;
 import com.adeies.adeies.enterprise.repository.UserRepo;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,15 @@ public class OAuth2LoginSuccessHandler  extends SavedRequestAwareAuthenticationS
 
           userRepo.findByEmail(email)
                   .ifPresentOrElse(user ->{
-//                      DefaultOAuth2User newUser =  new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(user.getRole().name())),
-//                              attributes,"email");
-//                      Authentication securityAuth = new OAuth2AuthenticationToken(newUser,List.of(new SimpleGrantedAuthority(user.getRole().name())),
-//                              oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
-//                      SecurityContextHolder.getContext().setAuthentication(securityAuth);
+
                       this.setAlwaysUseDefaultTargetUrl(true);
                       this.setDefaultTargetUrl("http://localhost:4200/");
 
+                      Cookie idCookie = new Cookie("id-cookie" , Long.toString(user.getId()));
+                      idCookie.setPath("/");
+                      idCookie.setHttpOnly(false);
+                      idCookie.setMaxAge(60*60);
+                      response.addCookie(idCookie);
 
                   },() -> {
                       System.out.println("ton mpoul ");

@@ -7,6 +7,8 @@ import com.adeies.adeies.enterprise.entities.EmployeeCard;
 import com.adeies.adeies.enterprise.entities.SuccessResponse;
 import com.adeies.adeies.enterprise.entities.User;
 import com.adeies.adeies.enterprise.enums.ResponseMessages;
+import com.adeies.adeies.enterprise.repository.EmployeeRepo;
+import com.adeies.adeies.enterprise.repository.UserRepo;
 import com.adeies.adeies.enterprise.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -25,10 +28,14 @@ public class EmployeeCardController {
     @Autowired
     private EmployeeService employeeService;
 
+
+
     @GetMapping("/getSth")
     public ResponseEntity<String> getsth(){
         return new ResponseEntity<>("hi " , HttpStatus.OK);
     }
+
+
 
     @GetMapping("/login")
     public String log(@AuthenticationPrincipal OAuth2User oAuth2User, Model model ){

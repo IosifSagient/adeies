@@ -10,11 +10,14 @@ import com.adeies.adeies.enterprise.exception.ValidationFaultException;
 import com.adeies.adeies.enterprise.repository.DaysOffDefinitionRepo;
 import com.adeies.adeies.enterprise.repository.TransactionsRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +45,12 @@ public class TransactionsServiceImpl implements TransactionsService {
         trxRepo.save(transaction);
     }
 
+    @Override
+    public Page<Transactions> getUsersReq(Long id, Pageable pageable) {
+
+        return trxRepo.getTrxByUser(id,pageable);
+    }
+
     Integer getDayDifference(LocalDate startDate, LocalDate endDate) {
         final DayOfWeek startW = startDate.getDayOfWeek();
         final DayOfWeek endW = endDate.getDayOfWeek();
@@ -49,4 +58,6 @@ public class TransactionsServiceImpl implements TransactionsService {
         final long daysWithoutWeekends = days - 2 * ((days + startW.getValue()) / 7);
         return (int) (daysWithoutWeekends + (startW == DayOfWeek.SUNDAY ? 1 : 0) + ((endW == DayOfWeek.SUNDAY) ? 1 : 0));
     }
+
+
 }

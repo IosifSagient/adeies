@@ -1,14 +1,19 @@
 package com.adeies.adeies.enterprise.controller;
 
+import com.adeies.adeies.enterprise.dto.Transactions.TransactionsDto;
 import com.adeies.adeies.enterprise.dto.daysOff.RequestDaysOffRq;
 import com.adeies.adeies.enterprise.entities.SuccessResponse;
 import com.adeies.adeies.enterprise.entities.Transactions;
 import com.adeies.adeies.enterprise.entities.User;
 import com.adeies.adeies.enterprise.enums.Status;
+import com.adeies.adeies.enterprise.mappers.TrxDisplayMapper;
 import com.adeies.adeies.enterprise.repository.TransactionsRepo;
 import com.adeies.adeies.enterprise.service.TransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -17,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
@@ -28,6 +34,9 @@ public class TransactionsController {
 
     @Autowired
     private TransactionsRepo trxRepo;
+
+    @Autowired
+    private TrxDisplayMapper trxDisplayMapper;
 
 
     @PostMapping("/request/days-off")
@@ -68,4 +77,16 @@ public class TransactionsController {
         return ResponseEntity.ok(new SuccessResponse("Parta.", transactionsList));
     }
 
+    @GetMapping("/get/userReqs/{id}/{page}/{size}")
+    public List<TransactionsDto> getUsersTransactions(@PathVariable Long id, @PathVariable int page , @PathVariable int size) {
+        Pageable pageable = PageRequest.of(page,size);
+        Page<Transactions> allReqs = trxRepo.getTrxByUser(id,pageable);
+        System.out.println("kati "  + allReqs.getContent());
+        return allReqs.getContent().stream().map(trx -> trxDisplayMapper.toDto(trx)).collect(Collectors.toList());
+    }
+
+    @GetMapping("get/trxCount/{id}")
+    public Integer getTrxCount(@PathVariable Long id){
+        return trxRepo.getTrxCount(id);
+    }
 }

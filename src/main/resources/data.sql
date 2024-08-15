@@ -103,3 +103,47 @@ on o.definition_id = d.id;
 --INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
 --                                 id, user_id, comment)
 --VALUES (5, '2024-01-18', '2024-01-14', 1, null, 2, 4, 1, 'Testadeia 2: H epistrofh');
+
+
+select * from transactions;
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (4, '2024-01-17', '2024-01-14', 1, null, 1, 1, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (6, '2024-01-17', '2024-01-14', 1, null, 1, 2, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (7, '2024-01-17', '2024-01-14', 1, null, 1, 3, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (8, '2024-01-17', '2024-01-14', 1, null, 1, 4, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (9, '2024-01-17', '2024-01-14', 1, null, 1, 5, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (10, '2024-01-17', '2024-01-14', 1, null, 1, 6, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (11, '2024-01-17', '2024-01-14', 1, null, 1, 7, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (12, '2024-01-17', '2024-01-14', 1, null, 1, 8, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (13, '2024-01-17', '2024-01-14', 1, null, 1, 9, 1, 'Testadeia');
+
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (14, '2024-01-17', '2024-01-14', 1, null, 1, 10, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (15, '2024-01-17', '2024-01-14', 1, null, 1, 11, 1, 'Testadeia');
+
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (16, '2024-01-17', '2024-01-14', 1, null, 1, 12, 1, 'Testadeia');
+INSERT INTO public.transactions (days, end_date, start_date, status, approved_by_id, definition_id,
+                                id, user_id, comment)
+VALUES (17, '2024-01-17', '2024-01-14', 1, null, 1, 13, 1, 'Testadeia');

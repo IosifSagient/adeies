@@ -28,7 +28,7 @@ public class Transactions {
     @JoinColumn(referencedColumnName = "id")
     private User approvedBy;
 
-    @OneToOne(fetch = FetchType.EAGER, targetEntity = DaysOffDefinition.class, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = DaysOffDefinition.class, optional = false)
     @JoinColumn(referencedColumnName = "id")
     private DaysOffDefinition definition;
 

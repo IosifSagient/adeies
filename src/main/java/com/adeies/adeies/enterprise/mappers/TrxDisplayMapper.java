@@ -14,7 +14,7 @@ public interface TrxDisplayMapper {
     TrxDisplayMapper INSTANCE = Mappers.getMapper(TrxDisplayMapper.class);
 
     @Mapping(target ="userId", source = "user.id")
-    @Mapping(target ="approvedBy", source = "approvedBy.id")
+    @Mapping(target ="approvedBy", source = "approvedBy.employeeCard.lastName")
     @Mapping(target = "definition" , source = "definition.description")
     TransactionsDto toDto (Transactions transactions);
 }

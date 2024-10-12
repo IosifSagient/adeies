@@ -15,7 +15,8 @@ import java.time.LocalDate;
 public class Transactions {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transactions_sequence")
+    @SequenceGenerator(name = "transactions_sequence", sequenceName = "transactions_sequence", allocationSize = 1)
     private Long id;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

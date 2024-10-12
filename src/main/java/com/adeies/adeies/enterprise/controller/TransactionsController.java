@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class TransactionsController {
 
     @PostMapping("/request/days-off")
     public ResponseEntity<SuccessResponse> requestDaysOff(@RequestBody RequestDaysOffRq rq,
-                                                          @AuthenticationPrincipal User user) {
+                                                          @AuthenticationPrincipal OAuth2User user) {
         trxService.requestDaysOff(rq, user);
         return new ResponseEntity<>(
                 new SuccessResponse("Day off request successfully submitted.", null),

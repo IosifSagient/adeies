@@ -26,4 +26,10 @@ public interface TransactionsRepo extends JpaRepository<Transactions, Long> {
 
     @Query(value = "SELECT * FROM TRANSACTIONS WHERE user_id = :userId order by start_date desc", nativeQuery = true)
     Page<Transactions> getTrxByUser (@Param("userId") Long userId, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "SELECT sum(days) FROM TRANSACTIONS WHERE USER_ID = :userId and definition_id = :definitionId and status = 1")
+    Integer getDaysRequestedPerTypeCount(@Param("userId") Long userId, @Param("definitionId") Long definitionId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM TRANSACTIONS WHERE USER_ID IN :usersList")
+    List<Transactions> getTrxGivingListOfUserIds(@Param("usersList") List<Long> usersList);
 }

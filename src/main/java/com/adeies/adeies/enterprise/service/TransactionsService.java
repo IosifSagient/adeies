@@ -1,6 +1,7 @@
 package com.adeies.adeies.enterprise.service;
 
 import com.adeies.adeies.enterprise.dto.daysOff.RequestDaysOffRq;
+import com.adeies.adeies.enterprise.dto.daysOff.UpdateRequestRq;
 import com.adeies.adeies.enterprise.entities.Transactions;
 import com.adeies.adeies.enterprise.entities.User;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,10 @@ import java.util.List;
 public interface TransactionsService {
     void requestDaysOff(RequestDaysOffRq rq, OAuth2User user);
 
-    Page<Transactions> getUsersReq (Long id, Pageable pageable);
+    void updateDayOffRequest(UpdateRequestRq rq, OAuth2User user);
+
+    Page<Transactions> getUsersReq(Long id, Pageable pageable);
+
+    List<Transactions> getTrxByDepartment(User user, Pageable pageable);
 
 }

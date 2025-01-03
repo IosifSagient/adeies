@@ -1,6 +1,9 @@
 package com.adeies.adeies.enterprise.controller;
 
-import com.adeies.adeies.enterprise.dto.Transactions.TransactionsDto;
+import com.adeies.adeies.enterprise.dto.DateRange;
+import com.adeies.adeies.enterprise.dto.Transactions.EmployeeTrxFilters;
+import com.adeies.adeies.enterprise.dto.Transactions.TransactionsDTO;
+import com.adeies.adeies.enterprise.dto.Transactions.TrxStatusUpdate;
 import com.adeies.adeies.enterprise.dto.daysOff.RequestDaysOffRq;
 import com.adeies.adeies.enterprise.dto.daysOff.UpdateRequestRq;
 import com.adeies.adeies.enterprise.entities.SuccessResponse;
@@ -11,12 +14,14 @@ import com.adeies.adeies.enterprise.exception.ValidationFaultException;
 import com.adeies.adeies.enterprise.mappers.TrxDisplayMapper;
 import com.adeies.adeies.enterprise.repository.TransactionsRepo;
 import com.adeies.adeies.enterprise.service.TransactionsService;
+import com.adeies.adeies.enterprise.utils.TransactionsSpecification;
 import com.adeies.adeies.enterprise.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -25,8 +30,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -93,15 +99,14 @@ public class TransactionsController {
     }
 
     @GetMapping("/get/by-department")
-    public List<Transactions> getDepartmentPendingTransactionsWithOauth2(
+    public List<TransactionsDTO> getDepartmentPendingTransactionsWithOauth2(
             @AuthenticationPrincipal OAuth2User oAuth2User) {
         User user = userUtils.getUserFromOAuth(oAuth2User);
-
-        return trxService.getTrxByDepartment(user, Pageable.unpaged());
+        return trxService.getTrxByDepartment(user, Pageable.unpaged(),null);
     }
 
     @GetMapping("/get/userReqs/{id}/{page}/{size}")
-    public List<TransactionsDto> getUsersTransactions(@PathVariable Long id, @PathVariable int page , @PathVariable int size) {
+    public List<TransactionsDTO> getUsersTransactions(@PathVariable Long id, @PathVariable int page , @PathVariable int size) {
         Pageable pageable = PageRequest.of(page,size);
         Page<Transactions> allReqs = trxRepo.getTrxByUser(id,pageable);
         System.out.println("kati "  + allReqs.getContent());
@@ -118,8 +123,30 @@ public class TransactionsController {
         return trxRepo.findById(id).orElseThrow(() -> new ValidationFaultException("010101", "TRX NOT FOUND"));
     }
 
-    @GetMapping("getRequests-By-User-And-Type/{userId}/{definitionId}")
-    public Integer getRequestedDaysPerDayOffType(@PathVariable Long userId ,@PathVariable Long definitionId){
-        return trxRepo.getDaysRequestedPerTypeCount(userId,definitionId);
+    @GetMapping("getRequests-By-User-And-Type/{definitionId}")
+    public Integer getRequestedDaysPerDayOffType(@AuthenticationPrincipal OAuth2User oAuth2User, @PathVariable("definitionId") Long definitionId){
+        User user = userUtils.getUserFromOAuth(oAuth2User);
+        return trxService.calculateDaysRequested(user, definitionId);
+    }
+
+    @PostMapping("updateTrxStatus")
+    public SuccessResponse updateStatusTrx(@RequestBody TrxStatusUpdate trxStatusUpdate, @AuthenticationPrincipal OAuth2User oAuth2User) {
+        User user = userUtils.getUserFromOAuth(oAuth2User);
+        trxService.updateTrxStatus(trxStatusUpdate ,user);
+        return new SuccessResponse("Status updated ", null);
+    }
+    @GetMapping("get/accepted/by-department")
+    public List<TransactionsDTO> getAcceptedTrx(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        User user = userUtils.getUserFromOAuth(oAuth2User);
+        List<Status> statuses = List.of(Status.ACCEPTED);
+        return trxService.getTrxByDepartment(user, Pageable.unpaged(), statuses);
+    }
+    //get/accepted/by-department
+
+    @PostMapping("get/filteredTrx")
+    public ResponseEntity<SuccessResponse<List<TransactionsDTO>>> getFilteredTrx(@RequestBody EmployeeTrxFilters employeeTrxFilters){
+        Specification<Transactions> spec = TransactionsSpecification.buildSpecificationDependingOnCriteria(employeeTrxFilters) ;
+        List<TransactionsDTO> trx = trxRepo.findAll(spec).stream().map(transactions -> trxDisplayMapper.toDto(transactions)).toList();
+        return ResponseEntity.ok(new SuccessResponse<>("parta data sou ", trx));
     }
 }

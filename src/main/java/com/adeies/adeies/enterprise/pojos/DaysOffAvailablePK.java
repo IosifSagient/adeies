@@ -1,5 +1,6 @@
 package com.adeies.adeies.enterprise.pojos;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;

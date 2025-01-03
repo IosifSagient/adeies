@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +38,9 @@ public class DaysOffController {
     }
 
     @GetMapping("/getUserDays/{id}")
-    public ResponseEntity<List<DaysOffWithDefinitionView>> getUserDays(@PathVariable Long id) {
+    public ResponseEntity<List<DaysOffWithDefinitionView>> getUserDays(@PathVariable Long id, Authentication authentication) {
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        System.out.println("User " + oAuth2User.getName() + " , Auth " + oAuth2User.getAuthorities());
         List<DaysOffWithDefinitionView> usersDays = daysOffWithDefinitionRepo.getAllDaysByUser(id);
         return new  ResponseEntity<>(usersDays, HttpStatus.OK);
     }

@@ -1,5 +1,8 @@
 package com.adeies.adeies.enterprise.service;
 
+import com.adeies.adeies.enterprise.dto.SearchFilters;
+import com.adeies.adeies.enterprise.dto.Transactions.TransactionsDTO;
+import com.adeies.adeies.enterprise.dto.Transactions.TrxStatusUpdate;
 import com.adeies.adeies.enterprise.dto.daysOff.RequestDaysOffRq;
 import com.adeies.adeies.enterprise.dto.daysOff.UpdateRequestRq;
 import com.adeies.adeies.enterprise.entities.DaysOffDefinition;
@@ -8,24 +11,24 @@ import com.adeies.adeies.enterprise.entities.User;
 import com.adeies.adeies.enterprise.enums.ErrorCode;
 import com.adeies.adeies.enterprise.enums.Status;
 import com.adeies.adeies.enterprise.exception.ValidationFaultException;
-import com.adeies.adeies.enterprise.repository.DaysOffDefinitionRepo;
-import com.adeies.adeies.enterprise.repository.EmployeeRepo;
-import com.adeies.adeies.enterprise.repository.TransactionsRepo;
-import com.adeies.adeies.enterprise.repository.UserRepo;
+import com.adeies.adeies.enterprise.mappers.TrxDisplayMapper;
+import com.adeies.adeies.enterprise.pojos.DaysOffAvailablePK;
+import com.adeies.adeies.enterprise.repository.*;
+import com.adeies.adeies.enterprise.utils.TransactionsSpecification;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.control.MappingControl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+import java.time.Year;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.adeies.adeies.enterprise.utils.UserUtils;
@@ -35,10 +38,13 @@ import com.adeies.adeies.enterprise.utils.UserUtils;
 public class TransactionsServiceImpl implements TransactionsService {
 
     private final DaysOffDefinitionRepo daysOffDefinitionRepo;
+    @Autowired
+    private final DaysOffRepo daysOffRepo;
     private final TransactionsRepo trxRepo;
     private final UserRepo userRepo;
     private final UserUtils userUtils;
     private final EmployeeRepo employeeRepo;
+    private final TrxDisplayMapper trxDisplayMapper;
     @Override
     public void requestDaysOff(RequestDaysOffRq dayOffRq, OAuth2User oAuth2User) {
         DaysOffDefinition dayOffType = daysOffDefinitionRepo.findById(
@@ -52,10 +58,20 @@ public class TransactionsServiceImpl implements TransactionsService {
             throw new ValidationFaultException("123432","OVERLAPPING DATES ");
         }
 
+        if(validateDaysOffRequest(dayOffRq.getStartDate(),dayOffRq.getEndDate(),user,dayOffRq.getDaysOffDefinitionId())){
+            throw new ValidationFaultException("2342","not enough days ");
+        }
+
         Transactions transaction = buildTransaction(user, dayOffType, dayOffRq);
         trxRepo.save(transaction);
     }
-
+    @Override
+    public void updateTrxStatus(TrxStatusUpdate trxStatusUpdate , User user){
+        Transactions trx = trxRepo.findById(trxStatusUpdate.getTrxId()).orElseThrow(() -> new ValidationFaultException("4546","Could not update trx"));
+        trx.setStatus(trxStatusUpdate.getStatus());
+        trx.setApprovedBy(user);
+        trxRepo.save(trx);
+    }
 
     @Override
     public void updateDayOffRequest(UpdateRequestRq rq, OAuth2User oAuth2User) {
@@ -72,6 +88,10 @@ public class TransactionsServiceImpl implements TransactionsService {
             throw new ValidationFaultException("123432","OVERLAPPING DATES ");
         }
 
+        if(validateDaysOffRequest(rq.getRequestDaysOffRq().getStartDate(),rq.getRequestDaysOffRq().getEndDate(),user,rq.getRequestDaysOffRq().getDaysOffDefinitionId())){
+            throw new ValidationFaultException("2342","not enough days ");
+        }
+
          Transactions transaction = buildTransaction(user, dayOffType, rq.getRequestDaysOffRq());
          transaction.setId(rq.getTrxId());
 
@@ -83,21 +103,25 @@ public class TransactionsServiceImpl implements TransactionsService {
         return trxRepo.getTrxByUser(id,pageable);
     }
 
-    @Override
-    public List<Transactions> getTrxByDepartment(User user, Pageable pageable) {
+    private List<Long> findAllUsersInDptFromManager(User user) {
         Long deptId = user.getEmployeeCard().getDepartment().getId();
         List<Long> employeeList = employeeRepo.findAllInDpt(deptId);
-        List<Long> users = userRepo.findUserFromEmployee(employeeList);
-        return trxRepo.getTrxGivingListOfUserIds(users);
+        return userRepo.findUserFromEmployee(employeeList);
     }
 
-    //    Integer getDayDifference(LocalDate startDate, LocalDate endDate) {
-//        final DayOfWeek startW = startDate.getDayOfWeek();
-//        final DayOfWeek endW = endDate.getDayOfWeek();
-//        final long days = ChronoUnit.DAYS.between(startDate, endDate);
-//        final long daysWithoutWeekends = days - 2 * ((days + startW.getValue()) / 7);
-//        return (int) (daysWithoutWeekends + (startW == DayOfWeek.SUNDAY ? 1 : 0) + ((endW == DayOfWeek.SUNDAY) ? 1 : 0));
-//    }
+    public List<TransactionsDTO> getTrxByDepartment(User user, Pageable pageable, List<Status> statuses) {
+        List<Long> userIds = findAllUsersInDptFromManager(user);
+        if (userIds == null || userIds.isEmpty()) {
+            throw new IllegalArgumentException("No users found in the manager's department.");
+        }
+        Specification<Transactions> spec = Specification
+                .where(TransactionsSpecification.hasStatus(statuses))
+                .and(TransactionsSpecification.hasUser(userIds));
+        return trxRepo.findAll(spec, pageable)  // Apply pageable to limit results
+                .stream()
+                .map(trxDisplayMapper::toDto)
+                .collect(Collectors.toList());
+    }
     public static int getDayDifference(LocalDate startDate, LocalDate endDate) {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("Start date must be before or equal to end date");
@@ -146,4 +170,38 @@ public class TransactionsServiceImpl implements TransactionsService {
         return transaction;
     }
 
+    public Integer calculateDaysRequested(User user , Long definitionId) {
+
+        List<Integer> filteredTransactions = trxRepo
+                .getTrxByUser(user.getId(), Pageable.unpaged())
+                .stream()
+                .filter(transaction -> (isThisYearsTrxs(transaction) && isTransactionPendingOrApproved(transaction) && Objects.equals(transaction.getDefinition().getId(), definitionId)))
+                .map(Transactions::getDays)
+                .toList();
+
+        return filteredTransactions.stream()
+                .reduce(0, Integer::sum);
+
+    }
+
+    private boolean isTransactionPendingOrApproved(Transactions transactions) {
+        return transactions.getStatus().equals(Status.PENDING) || transactions.getStatus().equals(Status.ACCEPTED);
+    }
+
+    private boolean isThisYearsTrxs(Transactions transactions){
+        int nextYear = Year.now().getValue() + 1;
+        int lastYear = Year.now().getValue() - 1;
+        return ((lastYear < transactions.getEndDate().getYear()) && (transactions.getEndDate().getYear() < nextYear));
+    }
+
+    private boolean validateDaysOffRequest(LocalDate startDate , LocalDate endDate, User user, Long definitionId) {
+        int daysRequested = getDayDifference(startDate,endDate);
+        int daysTaken = calculateDaysRequested(user , definitionId);
+        DaysOffAvailablePK daysOffAvailablePK = new DaysOffAvailablePK();
+        daysOffAvailablePK.setDefinition(definitionId);
+        daysOffAvailablePK.setUser(user.getId());
+        int daysAvailablePerCategory = daysOffRepo.findById(daysOffAvailablePK).orElseThrow(() -> new ValidationFaultException("3222","not days returned for this type")).getTotal();
+
+        return daysAvailablePerCategory < daysTaken + daysRequested;
+    }
 }

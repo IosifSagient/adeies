@@ -25,23 +25,17 @@ public class EmployeeCard {
     @NotNull()
     private String lastName;
 
-    @NotNull()
     private Date birthDate;
 
     @ManyToOne(targetEntity = Department.class)
     @JoinColumn(referencedColumnName = "id")
     private Department department;
 
-    @NotBlank()
-    @NotNull()
     private String position;
 
-    @NotBlank()
-    @NotNull()
     private String area;
 
-    @NotBlank()
-    @NotNull()
+
     @Length(min = 1, max = 30)
     private String maritalStatus;
 
